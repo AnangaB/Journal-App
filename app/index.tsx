@@ -2,7 +2,12 @@ import DayDisplay from "@/components/dayEntry";
 import Header from "@/components/header";
 import { View, ScrollView } from "react-native";
 import React from "react";
-import { Image } from "react-native-reanimated/lib/typescript/Animated";
+
+const localAssets = {
+  img: require("../assets/images/icon.png"),
+  img1: require("../assets/images/favicon.png"),
+  img2: require("../assets/images/adaptive-icon.png"),
+};
 
 export default function Index() {
   const entries = [
@@ -52,7 +57,7 @@ export default function Index() {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam consequuntur, inventore corrupti alias voluptates odit obcaecati consequatur voluptate natus neque non aliquid sit esse magnam provident eligendi. Et, aliquid corrupti.",
     },
   ];
-  const mediaLinks: string[] = ["logo"];
+  const medias = [localAssets["img"], localAssets["img1"], localAssets["img2"]];
   return (
     <View style={{ flex: 1 }}>
       <Header />
@@ -63,6 +68,7 @@ export default function Index() {
             key={index}
             date={entry.date}
             journalText={entry.journalText}
+            medias={medias}
           />
         ))}
       </ScrollView>
