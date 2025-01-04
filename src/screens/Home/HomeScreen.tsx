@@ -1,7 +1,7 @@
 import { View, ScrollView } from "react-native";
 import React from "react";
 import DayDisplay from "@/src/components/JournalPage/JournalPageContainer";
-import Header from "@/src/components/header";
+import Header from "@/src/components/Header/header";
 
 const localAssets = {
   img: require("@/assets/images/icon.png"),
@@ -9,7 +9,11 @@ const localAssets = {
   img2: require("@/assets/images/adaptive-icon.png"),
 };
 
-export default function Home() {
+type HomeScreenProps = {
+  navigation : any;
+};
+
+export default function HomeScreen({ navigation  }: HomeScreenProps) {
   const entries = [
     {
       date: new Date(),
@@ -40,9 +44,10 @@ export default function Home() {
     localAssets["img1"],
     localAssets["img2"],
   ];
+
   return (
     <View style={{ flex: 1 }}>
-      <Header />
+      <Header navigation ={navigation } />
 
       <ScrollView>
         {entries.map((entry, index) => (
