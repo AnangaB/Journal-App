@@ -10,10 +10,10 @@ const localAssets = {
 };
 
 type HomeScreenProps = {
-  navigation : any;
+  navigation: any;
 };
 
-export default function HomeScreen({ navigation  }: HomeScreenProps) {
+export default function HomeScreen({ navigation }: HomeScreenProps) {
   const entries = [
     {
       date: new Date(),
@@ -47,7 +47,7 @@ export default function HomeScreen({ navigation  }: HomeScreenProps) {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header navigation ={navigation } />
+      <Header navigation={navigation} />
 
       <ScrollView>
         {entries.map((entry, index) => (

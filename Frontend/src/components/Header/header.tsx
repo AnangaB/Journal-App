@@ -1,15 +1,34 @@
-import * as React from "react";
-import { Appbar } from "react-native-paper";
+import React from "react";
+import { useState } from "react";
+import { Appbar, Modal, PaperProvider, Portal, Text } from "react-native-paper";
 type HeaderProps = {
   isCreateNewEntryPage?: boolean;
   navigation: any;
+  sendForm?: () => Promise<boolean>;
 };
 
 export default function Header({
   isCreateNewEntryPage,
   navigation,
+  sendForm = async () => false,
 }: HeaderProps) {
-  function addJournalNewEntry() {}
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+
+  const handleSavingEntry = async () => {
+    try {
+      const result = await sendForm();
+
+      if (result) {
+        setShowErrorMessage(false);
+        navigation.navigate("Entry Page");
+      } else {
+        setShowErrorMessage(true);
+        console.log("Unable to add row");
+      }
+    } catch (error) {
+      console.error("Error in handleSavingEntry:", error);
+    }
+  };
 
   return (
     <Appbar.Header>
@@ -18,7 +37,7 @@ export default function Header({
         icon={isCreateNewEntryPage ? "content-save" : "plus"}
         onPress={
           isCreateNewEntryPage
-            ? () => navigation.navigate("Home")
+            ? () => handleSavingEntry()
             : () => navigation.navigate("Entry Page")
         }
       />

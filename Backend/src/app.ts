@@ -1,10 +1,15 @@
 import express, { Application } from 'express';
 import { connectDB } from './db/connection';
-
+import cors from 'cors';
+import makeNewTableRoute from './routes/makeNewTableRoutes';
+import addNewJournalEntry from './routes/addNewJournalEntry';
 const app: Application = express();
 
-// Middleware
 app.use(express.json());
+app.use(cors());
+
+app.use('/api', makeNewTableRoute);
+app.use('/api', addNewJournalEntry);
 
 // Routes
 app.get('/', (req, res) => {
@@ -14,7 +19,7 @@ app.get('/', (req, res) => {
 
 // Start Server
 const PORT = 5000;
-app.listen(PORT, async () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", async () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
     await connectDB();
 });
