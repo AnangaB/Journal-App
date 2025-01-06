@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Image } from "react-native";
-import { Text } from "react-native-paper";
 import JournalPageHeader from "./JournalPageHeader";
 import JournalPageMedia from "./JournalPageMedia";
 import JournalPageText from "./JournalPageText";
