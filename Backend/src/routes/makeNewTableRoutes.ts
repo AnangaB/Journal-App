@@ -11,7 +11,7 @@ router.get('/makeNewTableRoute', async (_: Request, res: Response) => {
       CREATE TABLE IF NOT EXISTS JournalEntries (
         date DATE PRIMARY KEY,
         text TEXT,
-        medias TEXT[]  -- Array of text to store media links or file names
+        medias TEXT[]
       );
     `);
 

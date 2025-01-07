@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { View } from "react-native";
-import { Appbar, Modal, Portal, Text } from "react-native-paper";
+import { Appbar, Button, Dialog, Portal, Text } from "react-native-paper";
 
 type HeaderProps = {
   isCreateNewEntryPage?: boolean;
@@ -46,20 +46,22 @@ export default function Header({
           }
         />
       </Appbar.Header>
-
       <Portal>
-        <Modal
+        <Dialog
           visible={showErrorMessage}
           onDismiss={() => setShowErrorMessage(false)}
-          contentContainerStyle={{
-            backgroundColor: "white",
-            padding: 20,
-            margin: 10,
-            height: "30%",
-          }}
         >
-          <Text>Error: There is already a journal entry with that date</Text>
-        </Modal>
+          <Dialog.Title>Error</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">
+              There is already an entry with that date, please try again with
+              another date.
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setShowErrorMessage(false)}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
       </Portal>
     </View>
   );

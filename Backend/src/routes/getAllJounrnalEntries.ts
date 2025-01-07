@@ -8,7 +8,7 @@ router.get('/getAllJournalEntries', async (_: Request, res: Response) => {
   try {
 
     const result = await client.query(`
-      SELECT * FROM JournalEntries;
+      SELECT * FROM JournalEntries ORDER BY date DESC;
     `);
     res.json(result["rows"])
   } catch (error) {

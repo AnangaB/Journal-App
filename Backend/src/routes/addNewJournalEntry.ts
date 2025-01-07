@@ -4,11 +4,17 @@ import client from '../db/connection';
 const router = express.Router();
 
 // API endpoint for making a new table, if it doesn't already exist
-router.get('/addNewJournalEntry/:date/:text', async (req: Request, res: Response) => {
-    const date = req.params.date;
-    const journalText = req.params.text;
-    console.log("API received: ", date, journalText)
-  try {
+router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<any> => {
+
+    const { date, text } = req.body;
+    
+    console.log("API received: ",  req.body, date, text)
+
+    if (!date || !text) {
+      return res.status(400).json({ error: "Both 'date' and 'text' are required." });
+    }
+
+    try {
         // First, check if the date already exists in the JournalEntries table
         const checkQuery = {
         text: `SELECT date FROM JournalEntries WHERE date = $1 LIMIT 1`,
@@ -27,7 +33,7 @@ router.get('/addNewJournalEntry/:date/:text', async (req: Request, res: Response
                 name: 'fetch-user',
                 text: `INSERT INTO JournalEntries (date, text, medias )
                 VALUES ($1,$2,$3);`,
-                values: [date, journalText, []],
+                values: [date, text, []],
                 }
         
                 // SQL query to create the table if it doesn't exist
@@ -36,13 +42,10 @@ router.get('/addNewJournalEntry/:date/:text', async (req: Request, res: Response
                 res.json({ message: 'Row added Successfully!' });
 
         }
-
-
-        
-  } catch (error) {
+    } catch (error) {
     console.error('Error creating table:', error);
     res.status(500).json({ error: 'Failed to add to table.' });
-  }
+    }
 });
 
 export default router;

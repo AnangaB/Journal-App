@@ -29,7 +29,10 @@ const JournalPageHeader = (props: JournalPageHeaderProps) => {
   return (
     <View style={{ width: "100%" }}>
       <Appbar.Header style={{ backgroundColor: "#F5ECD5" }}>
-        <Appbar.Content title={formatDate(props.date)} />
+        <Appbar.Content
+          title={formatDate(props.date)}
+          titleStyle={{ fontSize: 18 }}
+        />
         <Appbar.Action
           icon={
             props.isPageEditMode == false ? "note-edit-outline" : "content-save"

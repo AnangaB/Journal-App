@@ -3,7 +3,6 @@ import { View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-
 type formDataType = {
   date: Date;
   text: string;
@@ -12,17 +11,14 @@ type formDataType = {
 type EntryFormProps = {
   selectedDate: Date;
   setSelectedDate: (d: Date) => void;
-  journalText: string;
   setJournalText: (s: string) => void;
 };
 
 const EntryForm = ({
   selectedDate,
   setSelectedDate,
-  journalText,
   setJournalText,
 }: EntryFormProps) => {
-
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const toggleShowDatePicker = () => {
