@@ -3,6 +3,7 @@ import Header from "../../components/Header/header";
 import EntryForm from "../../components/Forms/EntryForm";
 import { useState } from "react";
 import axios from "axios";
+import { PaperProvider } from "react-native-paper";
 
 type CreateNewEntryPageProps = {
   navigation: any;
@@ -36,31 +37,31 @@ const CreateNewEntryScreen = ({ navigation }: CreateNewEntryPageProps) => {
       console.log(response.data.message);
 
       if (response.data.message === "Row added Successfully!") {
-        return true;
+        return "Row added Successfully!";
       } else {
-        return false;
+        return "Error";
       }
     } catch (error: any) {
       console.error("Error in adding journal entry:", error);
       console.error("Error:", error.message, error.config);
     }
-    return false;
+    return "Error";
   };
 
   return (
-    <View>
-      <Header
-        isCreateNewEntryPage={true}
-        navigation={navigation}
-        sendForm={sendForm}
-      />
-      <EntryForm
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        journalText={journalText}
-        setJournalText={setJournalText}
-      />
-    </View>
+      <View>
+        <Header
+          isCreateNewEntryPage={true}
+          navigation={navigation}
+          sendForm={sendForm}
+        />
+        <EntryForm
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          journalText={journalText}
+          setJournalText={setJournalText}
+        />
+      </View>
   );
 };
 

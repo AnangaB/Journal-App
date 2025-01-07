@@ -3,6 +3,7 @@ import { connectDB } from './db/connection';
 import cors from 'cors';
 import makeNewTableRoute from './routes/makeNewTableRoutes';
 import addNewJournalEntry from './routes/addNewJournalEntry';
+import getAllJournalEntries from './routes/getAllJounrnalEntries'
 const app: Application = express();
 
 app.use(express.json());
@@ -10,7 +11,7 @@ app.use(cors());
 
 app.use('/api', makeNewTableRoute);
 app.use('/api', addNewJournalEntry);
-
+app.use('/api',getAllJournalEntries)
 // Routes
 app.get('/', (req, res) => {
     console.log(req.body);

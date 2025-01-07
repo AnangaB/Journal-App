@@ -3,24 +3,27 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@/src/screens/Home/HomeScreen";
 import CreateNewEntryScreen from "@/src/screens/AddNewEntry/CreateNewEntryScreen";
+import { PaperProvider } from "react-native-paper";
 
 const Stack = createNativeStackNavigator();
 
 export default function Index() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Entry Page"
-          component={CreateNewEntryScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Entry Page"
+            component={CreateNewEntryScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

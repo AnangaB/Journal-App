@@ -1,7 +1,9 @@
 import { View, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DayDisplay from "@/src/components/JournalPage/JournalPageContainer";
 import Header from "@/src/components/Header/header";
+import { PaperProvider } from "react-native-paper";
+import axios from "axios";
 
 const localAssets = {
   img: require("@/assets/images/icon.png"),
@@ -13,51 +15,52 @@ type HomeScreenProps = {
   navigation: any;
 };
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const entries = [
-    {
-      date: new Date(),
-      journalText:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam consequuntur, inventore corrupti alias voluptates odit obcaecati consequatur voluptate natus neque non aliquid sit esse magnam provident eligendi. Et, aliquid corrupti.",
-    },
-    {
-      date: new Date(),
-      journalText:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam consequuntur, inventore corrupti alias voluptates odit obcaecati consequatur voluptate natus neque non aliquid sit esse magnam provident eligendi. Et, aliquid corrupti.",
-    },
-    {
-      date: new Date(),
-      journalText:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam consequuntur, inventore corrupti alias voluptates odit obcaecati consequatur voluptate natus neque non aliquid sit esse magnam provident eligendi. Et, aliquid corrupti.",
-    },
-    {
-      date: new Date(),
-      journalText:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam consequuntur, inventore corrupti alias voluptates odit obcaecati consequatur voluptate natus neque non aliquid sit esse magnam provident eligendi. Et, aliquid corrupti.",
-    },
-  ];
-  const medias = [
-    localAssets["img"],
-    localAssets["img1"],
-    localAssets["img2"],
-    localAssets["img"],
-    localAssets["img1"],
-    localAssets["img2"],
-  ];
+type journalEntry = {
+  date: Date;
+  text: string;
+  medias: string[];
+};
 
+export default function HomeScreen({ navigation }: HomeScreenProps) {
+  const [entries, setEntries] = useState<journalEntry[]>([]);
+  const getAllJournalEntries = async () => {
+    try {
+      console.log("Fetching journal entries from API...");
+      const response = await axios.get<journalEntry[]>(
+        `${process.env.EXPO_PUBLIC_API_ADDRESS}/api/getAllJournalEntries`
+      );
+      console.log("API Response:", response.data);
+
+      // Set entries state only if response data is an array
+      if (Array.isArray(response.data)) {
+        setEntries(response.data);
+        console.log("Entries updated successfully:", response.data);
+      } else {
+        console.error("Unexpected API response format:", response.data);
+        setEntries([]); // Fallback to an empty array
+      }
+    } catch (error: any) {
+      console.error("Error fetching journal entries:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    getAllJournalEntries();
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
 
       <ScrollView>
-        {entries.map((entry, index) => (
-          <DayDisplay
-            key={index}
-            date={entry.date}
-            journalText={entry.journalText}
-            medias={medias}
-          />
-        ))}
+        {entries &&
+          entries.map((entry, index) => (
+            <DayDisplay
+              key={index}
+              date={new Date(entry["date"])}
+              journalText={entry["text"]}
+              medias={[]}
+            />
+          ))}
       </ScrollView>
     </View>
   );
