@@ -3,16 +3,19 @@ import { View, Image } from "react-native";
 import JournalPageHeader from "./JournalPageHeader";
 import JournalPageMedia from "./JournalPageMedia";
 import JournalPageText from "./JournalPageText";
+import { editJournalEntryInDB } from "@/src/api/Journal DB/journalApiRequests";
 
 type DayDisplayProps = {
   date: Date;
-  journalText: string;
+  text: string;
   medias: any[];
 };
 
-const DayDisplay = (props: DayDisplayProps) => {
+const DayDisplay = ({ date, text, medias }: DayDisplayProps) => {
   const [isPageEditMode, setPageEditMode] = useState<boolean>(false);
+  const [journalText, setJournalText] = useState<string>(text);
 
+  
   return (
     <View
       style={{
@@ -25,15 +28,17 @@ const DayDisplay = (props: DayDisplayProps) => {
       }}
     >
       <JournalPageHeader
-        date={props.date}
+        date={date}
         setPageEditMode={setPageEditMode}
         isPageEditMode={isPageEditMode}
+        saveEntry={() => editJournalEntryInDB(date, text)}
       />
       <JournalPageText
         isEditMode={isPageEditMode}
-        journalText={props.journalText}
+        journalText={journalText}
+        setJournalText={setJournalText}
       />
-      <JournalPageMedia medias={props.medias} />
+      <JournalPageMedia medias={medias} />
     </View>
   );
 };

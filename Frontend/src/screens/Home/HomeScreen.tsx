@@ -19,7 +19,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   useEffect(() => {
     getAllJournalEntries(setEntries);
-  }, []);
+  }, [entries]);
+
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
@@ -30,7 +31,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             <DayDisplay
               key={index}
               date={new Date(entry["date"])}
-              journalText={entry["text"]}
+              text={entry["text"]}
               medias={[]}
             />
           ))}

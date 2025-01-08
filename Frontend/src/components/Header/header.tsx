@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { View } from "react-native";
 import { Appbar, Button, Dialog, Portal, Text } from "react-native-paper";
+import DialogBox from "../common/DialogBox/ClickDoneDialogBox";
 
 type HeaderProps = {
   isCreateNewEntryPage?: boolean;
@@ -46,23 +47,14 @@ export default function Header({
           }
         />
       </Appbar.Header>
-      <Portal>
-        <Dialog
-          visible={showErrorMessage}
-          onDismiss={() => setShowErrorMessage(false)}
-        >
-          <Dialog.Title>Error</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">
-              There is already an entry with that date, please try again with
-              another date.
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setShowErrorMessage(false)}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+
+      <DialogBox
+        shouldMessageDisplay={showErrorMessage}
+        hideMessage={() => setShowErrorMessage(false)}
+        messageText={
+          " There is already an entry with that date, please try again with another date."
+        }
+      ></DialogBox>
     </View>
   );
 }

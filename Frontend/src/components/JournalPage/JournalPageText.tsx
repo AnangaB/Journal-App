@@ -5,21 +5,25 @@ import { Text, TextInput } from "react-native-paper";
 type JournalPageTextProps = {
   journalText: string;
   isEditMode: boolean;
+  setJournalText: (s: string) => void;
 };
 
-const JournalPageText = (props: JournalPageTextProps) => {
-  const [text, setText] = React.useState<string>(props.journalText);
+const JournalPageText = ({
+  journalText,
+  isEditMode,
+  setJournalText,
+}: JournalPageTextProps) => {
   return (
     <View style={{ width: "100%", padding: 5 }}>
-      {props.isEditMode == false ? (
-        <Text variant="bodyMedium">{text}</Text>
+      {isEditMode == false ? (
+        <Text variant="bodyMedium">{journalText}</Text>
       ) : (
         <TextInput
           style={{ height: 300 }}
           label="Edit Text"
-          value={text}
+          value={journalText}
           multiline={true}
-          onChangeText={(text) => setText(text)}
+          onChangeText={(text) => setJournalText(text)}
         />
       )}
     </View>

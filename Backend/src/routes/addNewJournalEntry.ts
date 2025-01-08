@@ -8,7 +8,7 @@ router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<
 
     const { date, text } = req.body;
     
-    console.log("API received: ",  req.body, date, text)
+    console.log("API request to add new journal entry received: ",  req.body, date, text)
 
     if (!date || !text) {
       return res.status(400).json({ error: "Both 'date' and 'text' are required." });
@@ -25,12 +25,12 @@ router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<
 
         if (checkResult !== null && checkResult.rowCount !== null && checkResult.rowCount > 0) {
             // If the date already exists, send a response indicating it already exists
-            res.json({ message: 'A journal entry already exists for this date.' });
+            res.status(400).json({ message: 'A journal entry already exists for this date.' });
         }
         else{
             const query = {
                 // give the query a unique name
-                name: 'fetch-user',
+                name: 'add-entry',
                 text: `INSERT INTO JournalEntries (date, text, medias )
                 VALUES ($1,$2,$3);`,
                 values: [date, text, []],
@@ -39,7 +39,7 @@ router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<
                 // SQL query to create the table if it doesn't exist
                 await client.query(query);
         
-                res.json({ message: 'Row added Successfully!' });
+                res.status(200).json({ message: 'Row Added!' });
 
         }
     } catch (error) {
