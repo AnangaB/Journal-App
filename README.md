@@ -7,7 +7,7 @@ This project is a work in progress. Stay tuned for updates as features are imple
 
 ## Features Implemented
 
-- **Daily Entries"": Create/edit/delete journal entries for any selected date. 
+- **Daily Entries**: Create/edit/delete journal entries for any selected date. 
 
 ## Planned Features
 
