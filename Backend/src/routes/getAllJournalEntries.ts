@@ -5,6 +5,8 @@ const router = express.Router();
 
 // API endpoint for geting all the entries
 router.get('/getAllJournalEntries', async (_: Request, res: Response) => {
+  console.log("Received: /getAllJournalEntries,")
+  
   try {
 
     const result = await client.query(`

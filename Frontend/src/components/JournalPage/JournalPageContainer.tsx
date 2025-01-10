@@ -1,21 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image } from "react-native";
 import JournalPageHeader from "./JournalPageHeader";
 import JournalPageMedia from "./JournalPageMedia";
 import JournalPageText from "./JournalPageText";
-import { editJournalEntryInDB } from "@/src/api/Journal DB/journalApiRequests";
+import { editJournalEntryInDB } from "@/src/api/Journal DB/modifyEntry";
 
 type DayDisplayProps = {
   date: Date;
   text: string;
   medias: any[];
+  setLastModified: (d: Date) => void;
 };
 
-const DayDisplay = ({ date, text, medias }: DayDisplayProps) => {
+const DayDisplay = ({
+  date,
+  text,
+  medias,
+  setLastModified,
+}: DayDisplayProps) => {
+  
   const [isPageEditMode, setPageEditMode] = useState<boolean>(false);
   const [journalText, setJournalText] = useState<string>(text);
 
-  
+  useEffect(() => {
+    setLastModified(new Date());
+  }, [journalText]);
+
   return (
     <View
       style={{
@@ -31,6 +41,7 @@ const DayDisplay = ({ date, text, medias }: DayDisplayProps) => {
         date={date}
         setPageEditMode={setPageEditMode}
         isPageEditMode={isPageEditMode}
+        setLastModified={setLastModified}
         saveEntry={() => editJournalEntryInDB(date, text)}
       />
       <JournalPageText

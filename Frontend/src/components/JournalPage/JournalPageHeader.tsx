@@ -1,14 +1,15 @@
-import { deleteJournalEntryFromDB } from "@/src/api/Journal DB/journalApiRequests";
 import { useState } from "react";
 import { View } from "react-native";
 import { Appbar } from "react-native-paper";
 import YesNoDialogBox from "../common/DialogBox/YesNoDialogBox";
+import { deleteJournalEntryFromDB } from "@/src/api/Journal DB/modifyEntry";
 
 type JournalPageHeaderProps = {
   date: Date;
   setPageEditMode: any;
   isPageEditMode: boolean;
   saveEntry: () => void;
+  setLastModified: (d: Date) => void;
 };
 
 const JournalPageHeader = ({
@@ -16,6 +17,7 @@ const JournalPageHeader = ({
   setPageEditMode,
   isPageEditMode,
   saveEntry,
+  setLastModified,
 }: JournalPageHeaderProps) => {
   function formatDate(d: Date): string {
     const options: Intl.DateTimeFormatOptions = {
@@ -30,6 +32,7 @@ const JournalPageHeader = ({
 
   function toggleEditButton() {
     if (isPageEditMode) {
+      setLastModified(new Date());
       saveEntry();
       setPageEditMode(false);
     } else {
@@ -44,11 +47,13 @@ const JournalPageHeader = ({
       <Appbar.Header style={{ backgroundColor: "#F5ECD5" }}>
         <Appbar.Content
           title={formatDate(date)}
-          titleStyle={{ fontSize: 18 }}
+          titleStyle={{ fontSize: 16 }}
         />
         <Appbar.Action
           icon={"trash-can"}
-          onPress={() => setShouldDisplayDeleteDialog(true)}
+          onPress={() => {
+            setShouldDisplayDeleteDialog(true);
+          }}
         />
 
         <Appbar.Action
@@ -61,7 +66,9 @@ const JournalPageHeader = ({
         shouldMessageDisplay={shouldDisplayDeleteDialog}
         hideMessage={() => setShouldDisplayDeleteDialog(false)}
         onPressYes={() => {
+          const newTime = new Date();
           deleteJournalEntryFromDB(date);
+          setLastModified(newTime);
           setShouldDisplayDeleteDialog(false);
         }}
         onPressNo={() => {

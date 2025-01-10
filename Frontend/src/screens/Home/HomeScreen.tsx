@@ -3,12 +3,8 @@ import React, { useEffect, useState } from "react";
 import DayDisplay from "@/src/components/JournalPage/JournalPageContainer";
 import Header from "@/src/components/Header/header";
 import { JournalEntryList } from "@/src/types/common/JournalEntryTypes";
-import { getAllJournalEntries } from "@/src/api/Journal DB/journalApiRequests";
-const localAssets = {
-  img: require("@/assets/images/icon.png"),
-  img1: require("@/assets/images/favicon.png"),
-  img2: require("@/assets/images/adaptive-icon.png"),
-};
+import { updateJournalList } from "@/src/api/Journal DB/getUpdatedEntries";
+import { getAllJournalEntries } from "@/src/api/Journal DB/getAllJournalEntries";
 
 type HomeScreenProps = {
   navigation: any;
@@ -17,9 +13,11 @@ type HomeScreenProps = {
 export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [entries, setEntries] = useState<JournalEntryList>([]);
 
+  const [lastModified, setLastModified] = useState<Date>(new Date());
+
   useEffect(() => {
     getAllJournalEntries(setEntries);
-  }, [entries]);
+  }, [lastModified]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -32,6 +30,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               key={index}
               date={new Date(entry["date"])}
               text={entry["text"]}
+              setLastModified={setLastModified}
               medias={[]}
             />
           ))}

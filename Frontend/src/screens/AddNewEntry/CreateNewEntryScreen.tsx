@@ -2,7 +2,7 @@ import { View } from "react-native";
 import Header from "../../components/Header/header";
 import EntryForm from "../../components/Forms/EntryForm";
 import { useState } from "react";
-import { addNewJournalEntryToDB } from "@/src/api/Journal DB/journalApiRequests";
+import { addNewJournalEntryToDB } from "@/src/api/Journal DB/modifyEntry";
 
 type CreateNewEntryPageProps = {
   navigation: any;

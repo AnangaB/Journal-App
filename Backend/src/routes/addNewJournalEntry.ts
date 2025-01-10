@@ -6,9 +6,9 @@ const router = express.Router();
 // API endpoint for making a new table, if it doesn't already exist
 router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<any> => {
 
-    const { date, text } = req.body;
+    const { date, text, lastModified } = req.body;
     
-    console.log("API request to add new journal entry received: ",  req.body, date, text)
+    console.log("API request to add new journal entry received: ",  req.body, date, text,lastModified)
 
     if (!date || !text) {
       return res.status(400).json({ error: "Both 'date' and 'text' are required." });
@@ -18,7 +18,7 @@ router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<
         // First, check if the date already exists in the JournalEntries table
         const checkQuery = {
         text: `SELECT date FROM JournalEntries WHERE date = $1 LIMIT 1`,
-        values: [date],
+        values: [lastModified],
         };
 
         const checkResult = await client.query(checkQuery);
@@ -31,10 +31,10 @@ router.post('/addNewJournalEntry', async (req: Request, res: Response): Promise<
             const query = {
                 // give the query a unique name
                 name: 'add-entry',
-                text: `INSERT INTO JournalEntries (date, text, medias )
-                VALUES ($1,$2,$3);`,
-                values: [date, text, []],
-                }
+                text: `INSERT INTO JournalEntries (date, text, medias, last_modified)
+                VALUES ($1,$2,$3,$4);`,
+                values: [date, text, [],lastModified],
+            };
         
                 // SQL query to create the table if it doesn't exist
                 await client.query(query);

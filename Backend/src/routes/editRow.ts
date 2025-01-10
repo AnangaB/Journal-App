@@ -6,7 +6,7 @@ const router = express.Router();
 // API endpoint for editing an existing row in the table
 router.post('/editRow', async (req: Request, res: Response): Promise<any> => {
 
-    const { date, text } = req.body;
+    const { date, text,lastModified } = req.body;
     
     console.log("editExistingRow API received: ",  req.body, date, text)
 
@@ -32,9 +32,9 @@ router.post('/editRow', async (req: Request, res: Response): Promise<any> => {
                 name: 'update-entry',
                 text:`
                     UPDATE JournalEntries
-                    SET text = $2 , medias = $3
+                    SET text = $2 , medias = $3, last_modified
                     WHERE date = $1;`,
-                values: [date, text, []],
+                values: [date, text, [],lastModified],
                 }
         
                 await client.query(query);
