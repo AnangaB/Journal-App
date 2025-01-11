@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Router, Request, Response } from 'express';
+import { StravaActivity } from '../../types/Strava Types/StravaActivity';
+import { condenseRawActivity } from '../Strava Helper Functions/condenseRawActivity';
 
 
 const getStravaActivities = async (accessToken: string, date: Date) => {
@@ -53,7 +55,8 @@ router.post('/activitiesForDate', async (req: Request, res: Response) => {
     console.log("Fetching activities with access token: ", accessToken);
 
     const activities = await getStravaActivities(accessToken, new Date(date));
-    res.json(activities); // Return activities as JSON
+    const returningList:StravaActivity[] = condenseRawActivity(activities)
+    res.json(returningList); // Return activities as JSON
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch activities by date' });
   }
