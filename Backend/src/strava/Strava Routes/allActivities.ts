@@ -13,7 +13,6 @@ const getStravaActivities = async (accessToken: string) => {
         'page':1
       },
     });
-    console.log("response.data: \n",response.data)
     return response.data; // Returns the list of activities
   } catch (error: any) {
     console.error('Error fetching activities from Strava:', error.response?.data || error.message);

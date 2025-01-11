@@ -20,5 +20,4 @@ export const strava_strategy = new StravaStrategy(
     return done(null, profile);
   }
 );
-
   

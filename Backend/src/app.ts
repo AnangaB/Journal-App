@@ -14,6 +14,7 @@ import { strava_strategy } from './Strava/stravaStrategy';
 import dotenv from 'dotenv';
 import stravaAuth from './Strava/stravaAuth';
 import allActivities from './Strava/Strava Routes/allActivities';
+import activityForDate from './Strava/Strava Routes/activityForDate';
 dotenv.config();
 
 const app: Application = express();
@@ -39,7 +40,7 @@ app.use(passport.session());
   
 app.use('/', stravaAuth);
 app.use('/api/strava',allActivities );
-
+app.use('/api/strava',activityForDate );
 
 // DB routes
 app.use('/api', makeNewTableRoute);
