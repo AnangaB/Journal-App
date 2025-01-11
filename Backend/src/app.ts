@@ -1,17 +1,18 @@
 import express, { Application } from 'express';
-import { connectDB } from './db/connection';
+import { connectDB } from './Database/connection';
 import cors from 'cors';
-import makeNewTableRoute from './routes/makeNewTableRoutes';
-import addNewJournalEntry from './routes/addNewJournalEntry';
-import getAllJournalEntries from './routes/getAllJournalEntries'
-import editRow from './routes/editRow';
-import deleteRow from './routes/deleteRow';
-import getEntriesAfterLastUpdatedTime from './routes/getEntriesAfterLastUpdatedTime';
+import makeNewTableRoute from './Database/Database Routes/makeNewTableRoutes';
+import addNewJournalEntry from './Database/Database Routes/addNewJournalEntry';
+import getAllJournalEntries from './Database/Database Routes/getAllJournalEntries'
+import editRow from './Database/Database Routes/editRow';
+import deleteRow from './Database/Database Routes/deleteRow';
+import getEntriesAfterLastUpdatedTime from './Database/Database Routes/getEntriesAfterLastUpdatedTime';
 
 import passport from 'passport';
 import session from 'express-session';
-import { strava_strategy } from './strava/stravaStrategy';
+import { strava_strategy } from './Strava/stravaStrategy';
 import dotenv from 'dotenv';
+import stravaAuth from './Strava/stravaAuth';
 dotenv.config();
 
 const app: Application = express();
@@ -33,24 +34,8 @@ app.use(passport.session());
 
 //add strava connection
 passport.use(strava_strategy)
+app.use('/', stravaAuth);
 
-app.get('/auth/strava', passport.authenticate('strava'));
-
-app.get(
-  '/auth/strava/callback',
-  passport.authenticate('strava', { failureRedirect: '/' }),
-  (req, res) => {
-    res.send('Strava account connected successfully!');
-  }
-);
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-  });
-  
-passport.deserializeUser(function(user:any, done) {
-    done(null, user); // Deserialize the user into the session
-});
 
 // DB routes
 app.use('/api', makeNewTableRoute);
