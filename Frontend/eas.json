@@ -9,7 +9,10 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_ADDRESS": "https://77f7-209-53-155-52.ngrok-free.app"
+      }
     },
     "production": {
       "autoIncrement": true

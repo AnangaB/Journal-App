@@ -37,13 +37,11 @@ router.get('/activities', async (req: Request, res: Response) => {
         console.log("going ahead with access token, ", accessToken)
         const activities = await getStravaActivities(accessToken);
         const returningList:StravaActivity[] = condenseRawActivity(activities)
-        res.json(returningList); // Return activities as JSON
+        res.status(200).json(returningList); 
       } catch (error) {
         res.status(500).json({ error: 'Failed to fetch activities' });
       }
   }
-
-
 
 });
 

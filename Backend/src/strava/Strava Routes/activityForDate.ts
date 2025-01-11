@@ -56,12 +56,10 @@ router.post('/activitiesForDate', async (req: Request, res: Response) => {
 
     const activities = await getStravaActivities(accessToken, new Date(date));
     const returningList:StravaActivity[] = condenseRawActivity(activities)
-    res.json(returningList); // Return activities as JSON
+    res.status(200).json(returningList); // Return activities as JSON
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch activities by date' });
   }
-
-
 
 });
 
