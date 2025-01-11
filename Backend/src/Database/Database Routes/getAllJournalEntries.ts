@@ -12,6 +12,7 @@ router.get('/getAllJournalEntries', async (_: Request, res: Response) => {
     const result = await client.query(`
       SELECT * FROM JournalEntries ORDER BY date DESC;
     `);
+    console.log("Result in  /getAllJournalEntries: ",result)
     res.json(result["rows"])
   } catch (error) {
     console.error('Error getting all the values from table:', error);

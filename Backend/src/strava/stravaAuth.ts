@@ -17,11 +17,13 @@ passport.deserializeUser(function (user: any, done) {
 });
 
 // Strava authentication routes
-router.get('/auth/strava', passport.authenticate('strava'));
+router.get('/auth/strava', passport.authenticate('strava', {
+    scope: 'activity:read_all'
+  }));
 
 router.get(
   '/auth/strava/callback',
-  passport.authenticate('strava', { failureRedirect: '/' }),
+  passport.authenticate('strava', { failureRedirect: '/', scope: 'activity:read_all' }),
   (req, res) => {
     res.send('Strava account connected successfully!');
   }

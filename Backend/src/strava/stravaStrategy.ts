@@ -14,7 +14,9 @@ const stravaConfig: strategy.StrategyOption = {
 export const strava_strategy = new StravaStrategy(
   stravaConfig,
   async (accessToken, refreshToken, profile, done) => {
-    console.log(process.env.STRAVA_CLIENT_ID,  process.env.STRAVA_CLIENT_SECRET, process.env.STRAVA_CALLBACK)
+    console.log("strava_strategy ",process.env.STRAVA_CLIENT_ID,  process.env.STRAVA_CLIENT_SECRET, process.env.STRAVA_REDIRECT_URI)
+    console.log("strava_strategy: ",accessToken, refreshToken)
+    console.log(profile)
     return done(null, profile);
   }
 );

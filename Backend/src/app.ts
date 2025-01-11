@@ -13,6 +13,7 @@ import session from 'express-session';
 import { strava_strategy } from './Strava/stravaStrategy';
 import dotenv from 'dotenv';
 import stravaAuth from './Strava/stravaAuth';
+import allActivities from './Strava/Strava Routes/allActivities';
 dotenv.config();
 
 const app: Application = express();
@@ -27,14 +28,17 @@ app.use(session({
     saveUninitialized: true,
   }));
 
+
+
+//add strava connection
+passport.use(strava_strategy)
+
 // Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
   
-
-//add strava connection
-passport.use(strava_strategy)
 app.use('/', stravaAuth);
+app.use('/api/strava',allActivities );
 
 
 // DB routes
