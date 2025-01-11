@@ -7,11 +7,52 @@ import getAllJournalEntries from './routes/getAllJournalEntries'
 import editRow from './routes/editRow';
 import deleteRow from './routes/deleteRow';
 import getEntriesAfterLastUpdatedTime from './routes/getEntriesAfterLastUpdatedTime';
+
+import passport from 'passport';
+import session from 'express-session';
+import { strava_strategy } from './strava/stravaStrategy';
+import dotenv from 'dotenv';
+dotenv.config();
+
 const app: Application = express();
 
+  
 app.use(express.json());
 app.use(cors());
 
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: true,
+  }));
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+  
+
+//add strava connection
+passport.use(strava_strategy)
+
+app.get('/auth/strava', passport.authenticate('strava'));
+
+app.get(
+  '/auth/strava/callback',
+  passport.authenticate('strava', { failureRedirect: '/' }),
+  (req, res) => {
+    res.send('Strava account connected successfully!');
+  }
+);
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+  
+passport.deserializeUser(function(user:any, done) {
+    done(null, user); // Deserialize the user into the session
+});
+
+// DB routes
 app.use('/api', makeNewTableRoute);
 app.use('/api', addNewJournalEntry);
 app.use('/api',getAllJournalEntries);
